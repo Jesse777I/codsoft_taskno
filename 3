@@ -1,0 +1,131 @@
+# codsoft_taskno
+import java.util.Scanner;
+
+// Class to represent a user's bank account
+class UserAccount {
+    private double currentBalance;
+
+    // Constructor to initialize the account balance
+    public UserAccount(double initialBalance) {
+        this.currentBalance = initialBalance;
+    }
+
+    // Method to add funds
+    public boolean addFunds(double amount) {
+        if (amount > 0) {
+            currentBalance += amount;
+            return true;
+        }
+        return false;
+    }
+
+    // Method to withdraw funds
+    public boolean withdrawFunds(double amount) {
+        if (amount > 0 && amount <= currentBalance) {
+            currentBalance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    // Method to check current balance
+    public double getBalance() {
+        return currentBalance;
+    }
+}
+
+// Class to represent the ATM system
+class BankingATM {
+    private final UserAccount userAccount;
+
+    // Constructor to link the ATM to the user's account
+    public BankingATM(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    // Method to display menu options
+    public void showMenu() {
+        System.out.println("\nWelcome to the Banking ATM!");
+        System.out.println("1. Check Account Balance");
+        System.out.println("2. Deposit Money");
+        System.out.println("3. Withdraw Money");
+        System.out.println("4. Exit");
+    }
+
+    // Method to display the account balance
+    public void displayBalance() {
+        double balance = userAccount.getBalance();
+        System.out.printf("\nYour current account balance is: ₹%.2f\n", balance);
+    }
+
+    // Method to deposit funds
+    public void performDeposit() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("\nEnter the amount to deposit: ₹");
+        double depositAmount = input.nextDouble();
+
+        if (depositAmount <= 0) {
+            System.out.println("Invalid amount. Please enter a positive number.");
+        } else if (userAccount.addFunds(depositAmount)) {
+            System.out.printf("₹%.2f has been successfully deposited to your account.\n", depositAmount);
+        } else {
+            System.out.println("Transaction failed. Please try again.");
+        }
+    }
+
+    // Method to withdraw funds
+    public void performWithdrawal() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("\nEnter the amount to withdraw: ₹");
+        double withdrawalAmount = input.nextDouble();
+
+        if (withdrawalAmount <= 0) {
+            System.out.println("Invalid amount. Please enter a positive number.");
+        } else if (userAccount.withdrawFunds(withdrawalAmount)) {
+            System.out.printf("₹%.2f has been successfully withdrawn from your account.\n", withdrawalAmount);
+        } else {
+            System.out.println("Transaction failed. Insufficient funds or invalid amount.");
+        }
+    }
+
+    // Method to run the ATM interface
+    public void startATM() {
+        Scanner input = new Scanner(System.in);
+        while (true) {
+            showMenu();
+            System.out.print("\nChoose an option: ");
+            int choice = input.nextInt();
+
+            switch (choice) {
+                case 1:
+                    displayBalance();
+                    break;
+                case 2:
+                    performDeposit();
+                    break;
+                case 3:
+                    performWithdrawal();
+                    break;
+                case 4:
+                    System.out.println("\nThank you for using Banking ATM. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please select a valid option.");
+            }
+        }
+    }
+}
+
+// Main class to execute the program
+public class TaskRunner {
+    public static void main(String[] args) {
+        // Set up a user account with an initial balance of ₹1000
+        UserAccount account = new UserAccount(1000);
+
+        // Link the user account to the ATM system
+        BankingATM atm = new BankingATM(account);
+
+        // Start the ATM system
+        atm.startATM();
+    }
+}
