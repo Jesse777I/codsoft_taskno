@@ -1,0 +1,52 @@
+import java.util.Scanner;
+
+public class GradeCalculator {
+
+    public static void main(String[] args) {
+        Scanner inputScanner = new Scanner(System.in);
+
+        // Input: Collect marks for each subject
+        System.out.print("Enter total number of subjects: ");
+        int subjectCount = inputScanner.nextInt();
+
+        int[] scores = new int[subjectCount];
+        int sumOfMarks = 0;
+
+        for (int index = 0; index < subjectCount; index++) {
+            System.out.print("Enter marks obtained in subject " + (index + 1) + " (out of 100): ");
+            scores[index] = inputScanner.nextInt();
+            sumOfMarks += scores[index];
+        }
+
+        // Calculate Average Percentage
+        double averageScore = (double) sumOfMarks / subjectCount;
+
+        // Determine Grade
+        String gradeAchieved = determineGrade(averageScore);
+
+        // Display Results
+        System.out.println("\nSummary:");
+        System.out.println("Total Marks: " + sumOfMarks);
+        System.out.println("Average Score: " + averageScore + "%");
+        System.out.println("Final Grade: " + gradeAchieved);
+
+        inputScanner.close();
+    }
+
+    // Method to determine grade based on average score
+    public static String determineGrade(double averageScore) {
+        if (averageScore >= 90) {
+            return "A+";
+        } else if (averageScore >= 80) {
+            return "A";
+        } else if (averageScore >= 70) {
+            return "B";
+        } else if (averageScore >= 60) {
+            return "C";
+        } else if (averageScore >= 50) {
+            return "D";
+        } else {
+            return "F";
+        }
+    }
+}
